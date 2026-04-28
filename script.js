@@ -289,6 +289,31 @@ let detailQuantity = 1;
 
 const cart = new Map();
 
+function loadCartFromStorage() {
+  try {
+    const raw = localStorage.getItem("kupis_cart");
+    if (!raw) return;
+    const entries = JSON.parse(raw);
+    if (Array.isArray(entries)) {
+      entries.forEach(([key, qty]) => {
+        if (typeof key === "string" && Number.isFinite(qty)) {
+          cart.set(key, qty);
+        }
+      });
+    }
+  } catch (e) {
+    // ignore corrupt storage
+  }
+}
+
+function saveCartToStorage() {
+  try {
+    localStorage.setItem("kupis_cart", JSON.stringify(Array.from(cart.entries())));
+  } catch (e) {
+    // ignore quota errors
+  }
+}
+
 function formatPrice(price) {
   return `RM ${price.toFixed(2)}`;
 }
@@ -552,6 +577,7 @@ function renderCart() {
 
       return `
         <article class="cart-item">
+          <img class="cart-item__thumb" src="${IMAGE_BASE_PATH}/${item.image}" alt="${item.name}" loading="lazy" onerror="this.style.display='none'" />
           <div>
             <h3>${item.name}</h3>
             <p>${formatPrice(item.price)} each</p>
@@ -572,6 +598,7 @@ function renderCart() {
 
   cartTotal.textContent = formatPrice(getCartTotal());
   updateCartBadges();
+  saveCartToStorage();
 }
 
 function buildWhatsAppMessage(name, phone, pickup, notes) {
@@ -695,10 +722,65 @@ orderForm.addEventListener("submit", (event) => {
     return;
   }
 
+  // Build message and open a printable summary preview in a new window.
   const message = buildWhatsAppMessage(name, phone, pickup, notes);
   const whatsappUrl = `https://wa.me/${CAFE_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-  window.open(whatsappUrl, "_blank", "noopener");
+  const summaryHtml = `<!doctype html>
+  <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Order Summary - KUPIS Cafe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+      body{font-family:Inter,system-ui,sans-serif;padding:18px;color:#111}
+      h1{margin-top:0}
+      .items{margin:12px 0}
+      .item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee}
+      .total{font-weight:900;margin-top:12px}
+      .meta{margin:8px 0;color:#444}
+      button{appearance:none;padding:10px 14px;border-radius:8px;border:0;font-weight:800}
+      .controls{display:flex;gap:8px;margin-top:16px}
+      .print{background:#1f3d0a;color:#fff}
+      .send{background:#25D366;color:#fff}
+    </style>
+  </head>
+  <body>
+    <h1>KUPIS Cafe Order</h1>
+    <div class="meta">
+      <div><strong>Name:</strong> ${name}</div>
+      <div><strong>Phone:</strong> ${phone}</div>
+      <div><strong>Pickup:</strong> ${pickup}</div>
+    </div>
+    <div class="items">
+      ${Array.from(cart.entries()).map(([itemKey, qty]) => {
+        const item = getItemByKey(itemKey);
+        const line = item ? `<div class="item"><div>${item.name} x${qty}</div><div>${formatPrice(item.price*qty)}</div></div>` : '';
+        return line;
+      }).join('')}
+    </div>
+    <div class="total">Total: ${formatPrice(getCartTotal())}</div>
+    <div style="margin-top:8px;color:#444">Notes: ${notes || '-'}</div>
+    <div class="controls">
+      <button class="print" id="printBtn">Print</button>
+      <button class="send" id="sendBtn">Send via WhatsApp</button>
+    </div>
+    <script>
+      const wa = ${JSON.stringify(whatsappUrl)};
+      document.getElementById('printBtn').addEventListener('click', ()=>{ window.print(); });
+      document.getElementById('sendBtn').addEventListener('click', ()=>{ window.open(wa,'_blank'); });
+    </script>
+  </body>
+  </html>`;
+
+  const win = window.open("", "_blank");
+  if (win) {
+    win.document.write(summaryHtml);
+    win.document.close();
+  } else {
+    // fallback: open WhatsApp directly
+    window.open(whatsappUrl, "_blank", "noopener");
+  }
 });
 
 detailVisual.addEventListener("click", () => {
@@ -749,5 +831,6 @@ menuGrid.addEventListener("keydown", (event) => {
 
 setActiveButtons(activeCategory);
 setCoffeeView(activeCoffeeView);
+loadCartFromStorage();
 renderCart();
 renderMenu(activeCategory);

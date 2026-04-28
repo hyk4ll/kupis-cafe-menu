@@ -23,7 +23,7 @@ The menu now supports a full front-end ordering flow:
 
 - `index.html` - Page layout and navigation
 - `style.css` - Responsive tablet-style cafe UI
-- `script.js` - Menu data, filtering, cart state, order form, and WhatsApp flow
+- `script.js` - Menu data, filtering, cart state, order form, WhatsApp flow, localStorage persistence, and printable preview
 - `images/` - Reserved for future real menu photos
 
 ## WhatsApp Setup
@@ -54,6 +54,12 @@ Use full international format without `+`, spaces, or dashes.
 1. Copy your hosted URL.
 2. Use any QR generator (example: qr-code-generator.com).
 3. Print the QR code and place it on tables/counter.
+
+## Additional features added
+
+- Cart persists in the browser using `localStorage` so items remain after refreshing the page.
+- Cart rows now include item thumbnails (if present in `images/menu/`).
+- When submitting the order, a printable order summary preview opens in a new tab; use the "Print" button before sending the WhatsApp message.
 
 ## Real Menu Photos Setup
 
