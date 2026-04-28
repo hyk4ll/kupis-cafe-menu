@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KUPIS Cafe Menu</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="device-frame" aria-label="KUPIS Cafe menu overview">
+      <div class="menu-app menu-app--detail-closed">
+        <aside class="sidebar" aria-label="Cafe navigation">
+          <a class="brand" href="home.html" aria-label="KUPIS Cafe home">
+            <img class="brand__logo" src="images/LogoV3.png" alt="KUPIS Cafe logo" />
+            <span class="brand__name">KUPIS</span>
+            <span class="brand__subtitle">Cafe</span>
+            <span class="brand__year">Est. 2022</span>
+          </a>
+
+          <nav class="side-nav" aria-label="Primary menu">
+            <a class="side-link" href="home.html" aria-label="Go to home page">
+              <span class="side-link__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M3 11l9-8 9 8v10h-6v-6H9v6H3V11z" />
+                </svg>
+              </span>
+              Home
+            </a>
+          </nav>
+
+          <nav class="category-list" aria-label="Menu categories">
+            <button class="category-link category-link--active" type="button" data-category="Coffee">
+              <span class="category-link__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path
+                    d="M12 2a9 9 0 1 0 9 9 9.6 9.6 0 0 0-.15-1.68 6.2 6.2 0 0 1-5.9-5.9A9.6 9.6 0 0 0 12 2z"
+                  />
+                </svg>
+              </span>
+              Coffee
+            </button>
+            <button class="category-link" type="button" data-category="Non Coffee">
+              <span class="category-link__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M7 3h10l-1.3 17H8.3L7 3zm2.5 4h5l.25-2h-5.5L9.5 7z" />
+                </svg>
+              </span>
+              Non Coffee
+            </button>
+            <button class="category-link" type="button" data-category="Dessert">
+              <span class="category-link__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M3 12h18v8H3v-8zm2-5h14v4H5V7zm3-4h8v3H8V3z" />
+                </svg>
+              </span>
+              Dessert
+            </button>
+            <button class="category-link" type="button" data-category="All Menu">
+              <span class="category-link__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M4 5h7v7H4V5zm9 0h7v7h-7V5zM4 14h7v5H4v-5zm9 0h7v5h-7v-5z" />
+                </svg>
+              </span>
+              All Menu
+            </button>
+          </nav>
+
+          <div class="sidebar__footer" aria-label="Cafe details">
+            <button class="side-link side-link--muted" type="button">
+              <span class="side-link__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M3 11l9-8 9 8v10h-6v-6H9v6H3V11z" />
+                </svg>
+              </span>
+              About Us
+            </button>
+            <button class="side-link side-link--muted" type="button">
+              <span class="side-link__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M7 2h4l1 5-3 2a12 12 0 0 0 6 6l2-3 5 1v4a3 3 0 0 1-3 3A17 17 0 0 1 4 5a3 3 0 0 1 3-3z" />
+                </svg>
+              </span>
+              Contact
+            </button>
+          </div>
+        </aside>
+
+        <section class="catalog" aria-labelledby="menu-title">
+          <div class="catalog__topbar">
+            <div>
+              <p class="catalog__eyebrow">Freshly brewed overview</p>
+              <h1 id="menu-title">Coffee</h1>
+            </div>
+            <div class="catalog__meta">
+              <p class="catalog__count" id="menu-count" aria-live="polite">4 items</p>
+              <button class="cart-toggle" id="cart-toggle" type="button" aria-label="Open cart">
+                Cart
+                <span class="cart-toggle__count" id="cart-count">0</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="search-wrap">
+            <label class="search-wrap__label" for="menu-search">Search menu</label>
+            <input
+              class="search-wrap__input"
+              id="menu-search"
+              type="search"
+              placeholder="Search latte, tiramisu, chocolate..."
+              autocomplete="off"
+            />
+          </div>
+
+          <nav class="tab-bar" id="coffee-topbar" aria-label="Coffee quick filters">
+            <button class="tab-button tab-button--active" type="button" data-coffee-view="Coffee">
+              Coffee
+            </button>
+            <button class="tab-button" type="button" data-coffee-view="Fresh Brew">
+              Fresh Brew
+            </button>
+          </nav>
+
+          <!-- Cards are rendered from script.js so the menu can be upgraded later. -->
+          <div class="menu-grid" id="menu-grid" aria-live="polite"></div>
+        </section>
+
+        <aside class="detail-panel detail-panel--hidden" aria-labelledby="selected-item-name">
+          <button class="detail-panel__close" type="button" aria-label="Close preview">
+            &times;
+          </button>
+
+          <div class="detail-visual" id="detail-visual" aria-hidden="true"></div>
+
+          <div class="detail-panel__heading">
+            <h2 id="selected-item-name">Caffe Latte</h2>
+            <p id="selected-item-price">RM 8.50</p>
+          </div>
+
+          <p class="detail-panel__description" id="selected-item-description">
+            A smooth and creamy blend of rich espresso and steamed milk.
+          </p>
+
+          <ul class="detail-list" id="detail-list" aria-label="Selected item details"></ul>
+
+          <div class="preview-actions" aria-label="Menu preview controls">
+            <div class="quantity-preview" aria-label="Quantity preview">
+              <button id="detail-qty-decrease" type="button" aria-label="Decrease quantity">-</button>
+              <span id="detail-qty-value">1</span>
+              <button id="detail-qty-increase" type="button" aria-label="Increase quantity">+</button>
+            </div>
+            <button class="menu-preview-button" id="detail-add-to-cart" type="button">
+              Add To Cart
+              <span aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M7 8V7a5 5 0 0 1 10 0v1h3v13H4V8h3zm2 0h6V7a3 3 0 0 0-6 0v1z" />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Image Modal/Lightbox -->
+      <div class="image-modal" id="image-modal" aria-label="Image viewer modal" aria-hidden="true">
+        <button class="image-modal__close" type="button" aria-label="Close image viewer">
+          &times;
+        </button>
+        <div class="image-modal__content">
+          <img class="image-modal__image" id="image-modal-image" src="" alt="Item full view" />
+        </div>
+      </div>
+
+      <aside class="cart-panel cart-panel--hidden" id="cart-panel" aria-label="Shopping cart and order form">
+        <div class="cart-panel__header">
+          <h2>Your Order</h2>
+          <button class="cart-panel__close" id="cart-close" type="button" aria-label="Close cart">
+            &times;
+          </button>
+        </div>
+
+        <div class="cart-items" id="cart-items" aria-live="polite"></div>
+
+        <div class="cart-summary">
+          <p>Total</p>
+          <p id="cart-total">RM 0.00</p>
+        </div>
+
+        <form class="order-form" id="order-form" aria-label="Order details">
+          <label>
+            Name
+            <input id="order-name" name="name" type="text" required />
+          </label>
+          <label>
+            Phone
+            <input id="order-phone" name="phone" type="tel" required />
+          </label>
+          <label>
+            Pickup Time
+            <input id="order-pickup" name="pickup" type="time" required />
+          </label>
+          <label>
+            Notes
+            <textarea id="order-notes" name="notes" rows="3" placeholder="Less sugar, no ice, etc."></textarea>
+          </label>
+
+          <button class="whatsapp-order" id="whatsapp-order" type="submit">
+            Send Order via WhatsApp
+          </button>
+        </form>
+      </aside>
+
+      <div class="cart-backdrop cart-backdrop--hidden" id="cart-backdrop" aria-hidden="true"></div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
